@@ -1,5 +1,5 @@
 import React from "react";
-import UserService from "../services/user.service";
+import UserService from "../services/userService";
 
 export default class HomePage extends React.Component {
   constructor(props) {

@@ -3,7 +3,9 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
+import register from "../../img/register.jpg";
+import './register.css'
 
 const required = value => {
   if (!value) {
@@ -19,7 +21,7 @@ const vusername = value => {
   if (value.length < 4 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
-        The name must be between 3 and 20 characters.
+        The name must be between 4 and 20 characters.
       </div>
     );
   }
@@ -70,7 +72,6 @@ export default class Register extends Component {
     });
   }
 
-
   handleRegister(e) {
     e.preventDefault();
 
@@ -112,51 +113,47 @@ export default class Register extends Component {
 
   render() {
     return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
+        <div className="base-container">
+          <div className="content">
+            <div className="image">
+              <img
+                  src={register}
+                  alt="profile-img"
+              />
+            </div>
 
-          <Form
-            onSubmit={this.handleRegister}
-            ref={c => {
-              this.form = c;
-            }}
-          >
-            {!this.state.successful && (
-              <div>
+            <Form
+                onSubmit={this.handleRegister}
+                ref={(c) => {
+                  this.form = c;
+                }}
+            >
+              <div className="form">
                 <div className="form-group">
                   <label htmlFor="name">Username</label>
                   <Input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChangeUsername}
-                    validations={[required, vusername]}
+                      type="text"
+                      name="name"
+                      value={this.state.name}
+                      onChange={this.onChangeUsername}
+                      validations={[required, vusername]}
                   />
                 </div>
 
                 <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                    validations={[required, vpassword]}
-                />
-              </div>
-
-                <div className="form-group">
-                  <label htmlFor="repeatPassword">RepeatPassword</label>
+                  <label htmlFor="password">Password</label>
                   <Input
                       type="password"
-                      className="form-control"
+                      name="password"
+                      value={this.state.password}
+                      onChange={this.onChangePassword}
+                      validations={[required, vpassword]}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="repeatPassword">Repeat password</label>
+                  <Input
+                      type="password"
                       name="repeatPassword"
                       value={this.state.repeatPassword}
                       onChange={this.onChangeRepeatPassword}
@@ -165,34 +162,34 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <button className="btn btn-primary btn-block">Sign Up</button>
+                  <button
+                      className="button"
+                      disabled={this.state.loading}
+                  >
+                    {this.state.loading && (
+                        <span className="spinner-border spinner-border-sm"/>
+                    )}
+                    <span>Registration</span>
+                  </button>
                 </div>
-              </div>
-            )}
 
-            {this.state.message && (
-              <div className="form-group">
-                <div
-                  className={
-                    this.state.successful
-                      ? "alert alert-success"
-                      : "alert alert-danger"
-                  }
-                  role="alert"
-                >
-                  {this.state.message}
-                </div>
+                {this.state.message && (
+                    <div className="form-group">
+                      <div className="alert alert-danger" role="alert">
+                        {this.state.message}
+                      </div>
+                    </div>
+                )}
+                <CheckButton
+                    style={{ display: "none" }}
+                    ref={(c) => {
+                      this.checkBtn = c;
+                    }}
+                />
               </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-          </Form>
+            </Form>
+          </div>
         </div>
-      </div>
     );
   }
 }
