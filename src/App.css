@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar-brand img {
+  width: 60%;
+  height: 60%;
+}
+
+.nav {
+  background-color: #FF408D;
+}
+
+.nav-link {
+  font-size: 20px;
+  color: aliceblue;
+}
+
+.nav-link:hover {
+  color: #870047;
+}

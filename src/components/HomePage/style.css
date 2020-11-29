@@ -1,0 +1,17 @@
+.bg {
+
+}
+
+.videoTag {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 40%;
+    width:  40%;
+}
+
+h3 {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    text-align: center;
+}
