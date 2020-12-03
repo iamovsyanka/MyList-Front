@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import {BrowserRouter, Link, Redirect, Route, Switch} from "react-router-dom";
 import AuthService from "../../services/auth.service";
+import Tasks from "../TaskPage/task.component";
+import AddTask from "../AddTaskPage/addtask.component";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -15,7 +17,6 @@ export default class Profile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
     if (!currentUser) this.setState({ redirect: "/home" });
     this.setState({ currentUser: currentUser, userReady: true })
   }
@@ -25,31 +26,22 @@ export default class Profile extends Component {
       return <Redirect to={this.state.redirect} />
     }
 
-    const { currentUser } = this.state;
-
     return (
       <div className="container">
         {(this.state.userReady) ?
         <div>
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.name}</strong> Profile
-          </h3>
-        </header>
-        <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.role &&
-            currentUser.role.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
+          <BrowserRouter>
+              <Link to={"/tasks"}>
+                To do list
+              </Link>
+            <Link to={"/newTask"}>
+              Add new task
+            </Link>
+            <Switch>
+              <Route exact path="/tasks" component={Tasks} />
+              <Route exact path="/newTask" component={AddTask} />
+            </Switch>
+          </BrowserRouter>
       </div>: null}
       </div>
     );

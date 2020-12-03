@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import "./style.css"
-import sample from '../../img/home.mp4';
+import sample from '../../static/home.mp4';
 
 export default class Home extends Component {
     render() {

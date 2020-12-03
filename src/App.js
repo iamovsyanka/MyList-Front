@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import logo from './img/logo.png';
+import logo from './static/logo.png';
 
 import AuthService from "./services/auth.service";
 
@@ -18,9 +18,7 @@ class App extends Component {
         this.logOut = this.logOut.bind(this);
 
         this.state = {
-            showModeratorBoard: false,
-            showAdminBoard: false,
-            currentUser: undefined,
+            currentUser: undefined
         };
     }
 
@@ -30,7 +28,7 @@ class App extends Component {
         if (user) {
             this.setState({
                 currentUser: user,
-                showAdminBoard: user.roles.includes("admin"),
+                // showAdminBoard: user.roles.includes("admin"),
             });
         }
     }

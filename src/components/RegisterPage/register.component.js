@@ -4,7 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
 import AuthService from "../../services/auth.service";
-import register from "../../img/register.jpg";
+import register from "../../static/register.jpg";
 import './register.css'
 
 const required = value => {

@@ -10,11 +10,11 @@ class AuthService {
         password
       })
       .then(response => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
+          if (response.data.token) {
+              localStorage.setItem("user", JSON.stringify(response.data));
+          }
 
-        return response.data;
+          return response.data;
       });
   }
 
@@ -25,12 +25,13 @@ class AuthService {
   register(name, password, repeatPassword) {
     return axios.post(API_URL + "register", {
       name,
-      password, repeatPassword
+      password,
+      repeatPassword
     });
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('username'));
+    return JSON.parse(localStorage.getItem("user"))
   }
 }
 
