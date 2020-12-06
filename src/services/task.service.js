@@ -13,7 +13,7 @@ class TaskService {
     }
 
     addTask(name, description, dateOfDeadline) {
-        return axios.post(API_URL + '/newTask',
+        return axios.post(API_URL + 'newTask',
             { name, description, dateOfDeadline },
             { headers: authHeader() });
     }

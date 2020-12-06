@@ -55,7 +55,7 @@ class App extends Component {
                             <div className="navbar-nav ml-auto">
                                 <li className="nav-item">
                                     <Link to={"/profile"} className="nav-link">
-                                        {currentUser.name}
+                                        {currentUser.username}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
@@ -80,7 +80,6 @@ class App extends Component {
                             </div>
                         )}
                     </nav>
-
                     <div>
                         <Switch>
                             <Route exact path={["/", "/home"]} component={Home} />
