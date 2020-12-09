@@ -8,6 +8,8 @@ import {Card, Table, Image, ButtonGroup, Button, InputGroup, FormControl} from '
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 // eslint-disable-next-line no-unused-vars
 import {faList, faEdit, faTrash, faStepBackward, faFastBackward, faStepForward, faFastForward, faSearch, faTimes} from '@fortawesome/free-solid-svg-icons';
+// eslint-disable-next-line no-unused-vars
+import {BrowserRouter, Link, Redirect, Route, Switch} from "react-router-dom";
 
 const API_URL = 'http://localhost:8080/api/tasks/';
 
@@ -21,7 +23,8 @@ export default class TaskList extends React.Component {
             search : '',
             currentPage : 1,
             tasksPerPage : 5,
-            sortDir: "asc"
+            sortDir: "asc",
+            sortBy: "name"
         };
     }
 
@@ -29,18 +32,14 @@ export default class TaskList extends React.Component {
         this.findAllTasks(this.state.currentPage);
     }
 
-    sortData = () => {
-        setTimeout(() => {
-            this.state.sortDir === "asc" ? this.setState({sortDir: "desc"}) : this.setState({sortDir: "asc"});
-            this.findAllTasks(this.state.currentPage);
-        }, 500);
-    };
-
     findAllTasks(currentPage) {
         currentPage -= 1;
 
         return axios.get(
-            API_URL + 'list?page='+currentPage+"&size="+this.state.tasksPerPage+"&sortBy=name&sortDir="+this.state.sortDir,
+            API_URL + 'list?page='+currentPage
+            + "&size=" + this.state.tasksPerPage
+            + "&sortBy=" + this.state.sortBy
+            + "&sortDir="+this.state.sortDir,
             { headers: authHeader() })
             .then(response => response.data)
             .then((data) => {
@@ -51,6 +50,23 @@ export default class TaskList extends React.Component {
                     currentPage: data.number + 1
                 });
             });
+    };
+
+    deleteTask(taskId) {
+        TaskService.deleteTask(taskId).then((response) => {
+            const list = this.state.list.filter((task) => task.id !== taskId);
+            this.setState({
+                list: list
+            });
+        });
+    };
+
+    sortData = () => {
+        setTimeout(() => {
+            this.setState({sortBy: "dateOfCreation"});
+            this.state.sortDir === "asc" ? this.setState({sortDir: "desc"}) : this.setState({sortDir: "asc"});
+            this.findAllTasks(this.state.currentPage);
+        }, 500);
     };
 
     cancelSearch = () => {
@@ -131,13 +147,9 @@ export default class TaskList extends React.Component {
         });
     };
 
-    deleteTask(taskId) {
-        TaskService.deleteTask(taskId).then((response) => {
-            const list = this.state.list.filter((task) => task.id !== taskId);
-            this.setState({
-                list: list
-            });
-        });
+    onclick () {
+        this.props.history.push("/addTask");
+        window.location.reload();
     }
 
     render() {
@@ -151,6 +163,7 @@ export default class TaskList extends React.Component {
                             <FontAwesomeIcon icon={faList} /> To do list
                         </div>
                         <div style={{"float":"right"}}>
+                            <button onClick={(e) => this.onclick(e)}> Add new task </button>
                             <InputGroup size="sm">
                                 <FormControl placeholder="Search" name="search" value={search}
                                              className={"info-border"}
@@ -171,7 +184,7 @@ export default class TaskList extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Date of creation</th>
+                                    <th onClick={this.sortData}>Date of creation<div className={this.state.sortDir === "asc" ? "arrow arrow-up" : "arrow arrow-down"}> </div></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -232,6 +245,7 @@ export default class TaskList extends React.Component {
                         </Card.Footer> : null
                     }
                 </Card>
+
             </div>
 
             // <div>
