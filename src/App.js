@@ -8,8 +8,8 @@ import AuthService from "./services/auth.service";
 
 import Login from "./components/LoginPage/login.component";
 import Register from "./components/RegisterPage/register.component";
-import Profile from "./components/ProfilePage/profile.component";
 import Home from "./components/HomePage/home.component";
+import Tasks from "./components/TaskPage/task.component"
 
 class App extends Component {
 
@@ -54,7 +54,7 @@ class App extends Component {
                         {currentUser ? (
                             <div className="navbar-nav ml-auto">
                                 <li className="nav-item">
-                                    <Link to={"/profile"} className="nav-link">
+                                    <Link to={"/tasks"} className="nav-link">
                                         {currentUser.username}
                                     </Link>
                                 </li>
@@ -85,7 +85,7 @@ class App extends Component {
                             <Route exact path={["/", "/home"]} component={Home} />
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/register" component={Register} />
-                            <Route exact path="/profile" component={Profile} />
+                            <Route exact path="/tasks" component={Tasks} />
                         </Switch>
                     </div>
                 </div>

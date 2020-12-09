@@ -1,26 +1,5 @@
-.list-group {
-    width: 80%;
-    margin: 20px auto;
-    height: 20%;
-    border-radius: 5px;
-}
-
-.list-group-item {
-    padding: 10px;
-    position: relative;
-    transition: ease-in-out;
-}
-
-.list-group-item span {
-    position: absolute;
-    right: 10px;
-}
-
-.btn-delete {
-    float: right;
-}
-
-.btn-delete img {
-
-    height: 2%;
+.btn-pag {
+    color: #FF408D;
+    background-color: #FF73AB;
+    border: none;
 }
