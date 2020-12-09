@@ -113,6 +113,16 @@ export default class AddTask extends Component {
                             </div>
 
                             <div className="form-group">
+                                <label htmlFor="dateOfDeadline">Date of deadline</label>
+                                <Input
+                                    type="date"
+                                    name="dateOfDeadline"
+                                    value={this.state.dateOfDeadline}
+                                    onChange={this.onChangeDateOfDeadline}
+                                />
+                            </div>
+
+                            <div className="form-group">
                                 <button  className="button" >
                                     <span>Add task</span>
                                 </button>
