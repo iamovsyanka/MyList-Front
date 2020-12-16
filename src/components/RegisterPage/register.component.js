@@ -47,6 +47,7 @@ export default class Register extends Component {
 
     this.state = {
       name: "",
+      email: "",
       password: "",
       repeatPassword: "",
       successful: false,
@@ -55,6 +56,12 @@ export default class Register extends Component {
   }
 
   onChangeUsername(e) {
+    this.setState({
+      name: e.target.value
+    });
+  }
+
+  onChangeEmail(e) {
     this.setState({
       name: e.target.value
     });
@@ -85,6 +92,7 @@ export default class Register extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
           this.state.name,
+          this.state.email,
           this.state.password,
           this.state.repeatPassword
       ).then(
@@ -137,6 +145,17 @@ export default class Register extends Component {
                       value={this.state.name}
                       onChange={this.onChangeUsername}
                       validations={[required, vusername]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="name">Email</label>
+                  <Input
+                      type="text"
+                      name="name"
+                      value={this.state.email}
+                      onChange={this.onChangeEmail}
+                      validations={[required, vemail]}
                   />
                 </div>
 

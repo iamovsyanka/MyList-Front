@@ -1,5 +1,11 @@
-.btn-pag {
-    color: #FF408D;
+.btn-add {
+    color: aliceblue;
     background-color: #FF73AB;
     border: none;
+    width: 100%;
+    margin-right: 10%;
+}
+
+.info-border {
+    width: 100%;
 }

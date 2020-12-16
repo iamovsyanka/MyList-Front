@@ -3,13 +3,12 @@ import TaskService from "../../services/task.service";
 import axios from 'axios';
 import "./style.css"
 import authHeader from '../../services/auth-header';
+import {Link} from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import {Card, Table, Image, ButtonGroup, Button, InputGroup, FormControl} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-// eslint-disable-next-line no-unused-vars
 import {faList, faEdit, faTrash, faStepBackward, faFastBackward, faStepForward, faFastForward, faSearch, faTimes} from '@fortawesome/free-solid-svg-icons';
-// eslint-disable-next-line no-unused-vars
-import {BrowserRouter, Link, Redirect, Route, Switch} from "react-router-dom";
+import ErrorBoundary from "../ErrorPage/error.component";
 
 const API_URL = 'http://localhost:8080/api/tasks/';
 
@@ -157,26 +156,29 @@ export default class TaskList extends React.Component {
 
         return (
             <div>
+                <ErrorBoundary>
                 <Card className={"border"}>
                     <Card.Header>
                         <div style={{"float":"left"}}>
                             <FontAwesomeIcon icon={faList} /> To do list
                         </div>
                         <div style={{"float":"right"}}>
-                            <button onClick={(e) => this.onclick(e)}> Add new task </button>
-                            <InputGroup size="sm">
-                                <FormControl placeholder="Search" name="search" value={search}
-                                             className={"info-border"}
-                                             onChange={this.searchChange}/>
-                                <InputGroup.Append>
-                                    <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
-                                        <FontAwesomeIcon icon={faSearch}/>
+                                    <Button className="btn-add" type="button" onClick={(e) => this.onclick(e)}>
+                                        Add new task
                                     </Button>
-                                    <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
-                                        <FontAwesomeIcon icon={faTimes} />
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                                    <InputGroup>
+                                        <FormControl placeholder="Search by name" name="search" value={search}
+                                                     className="info-border"
+                                                     onChange={this.searchChange}/>
+                                        <InputGroup.Append>
+                                            <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
+                                                <FontAwesomeIcon icon={faSearch}/>
+                                            </Button>
+                                            <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
+                                                <FontAwesomeIcon icon={faTimes} />
+                                            </Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
                         </div>
                     </Card.Header>
                     <Card.Body>
@@ -184,7 +186,9 @@ export default class TaskList extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Description</th>
                                     <th onClick={this.sortData}>Date of creation<div className={this.state.sortDir === "asc" ? "arrow arrow-up" : "arrow arrow-down"}> </div></th>
+                                    <th>Date of deadline</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -197,10 +201,12 @@ export default class TaskList extends React.Component {
                                     list.map((task) => (
                                         <tr key={task.id}>
                                             <td>{task.name}</td>
+                                            <td>{task.description === null ? '-' : task.description}</td>
                                             <td>{task.dateOfCreation}</td>
+                                            <td>{task.dateOfDeadline === null ? '-' : task.dateOfDeadline}</td>
                                             <td>
                                                 <ButtonGroup>
-                                                    {/*<Link to={"edit/"+task.id} className="btn btn-sm btn-outline-primary"><FontAwesomeIcon icon={faEdit} /></Link>{' '}*/}
+                                                    <Link to={"editTask/"+task.id} className="btn btn-sm btn-outline-primary"><FontAwesomeIcon icon={faEdit} /></Link>{' '}
                                                     <Button size="sm" variant="outline-danger" onClick={() => {
                                                         this.deleteTask(task.id)}}><FontAwesomeIcon icon={faTrash} /></Button>
                                                 </ButtonGroup>
@@ -223,9 +229,9 @@ export default class TaskList extends React.Component {
                                                 onClick={this.firstPage}>
                                             <FontAwesomeIcon icon={faFastBackward} /> First
                                         </Button>
-                                        <Button type="button" className="btn-pag" disabled={currentPage === 1}
+                                        <Button type="button" variant="outline-info" disabled={currentPage === 1}
                                                 onClick={this.prevPage}>
-                                            <FontAwesomeIcon icon={faStepBackward} color="pink" /> Prev
+                                            <FontAwesomeIcon icon={faStepBackward} /> Prev
                                         </Button>
                                     </InputGroup.Prepend>
                                     <FormControl className={"page-num"} name="currentPage" value={currentPage}
@@ -245,32 +251,8 @@ export default class TaskList extends React.Component {
                         </Card.Footer> : null
                     }
                 </Card>
-
+                </ErrorBoundary>
             </div>
-
-            // <div>
-            //
-            //     <ul className="list-group">
-            //         {list && list.map((task) => (
-            //             <li key={task.id} className="list-group-item">
-            //                 Task: <b>{task.name}</b> <br/>
-            //                 Date of creation: <b>{task.dateOfCreation}</b>
-            //                 <button className="btn-delete" onClick={ () => {
-            //                         TaskService.deleteTask(task.id).then()
-            //                     }}>
-            //                         Delete
-            //                         {/*<img src={trash}  alt="Delete"/>*/}
-            //                 </button>
-            //                 <button className="btn-delete" onClick={ () => {
-            //                     TaskService.getTask(task.id)
-            //                 }}>
-            //                     View
-            //                     {/*<img src={trash}  alt="Delete"/>*/}
-            //                 </button>
-            //             </li>
-            //         ))}
-            //     </ul>
-            // </div>
         );
     }
 }

@@ -15,20 +15,41 @@ const required = value => {
     }
 };
 
-export default class AddTask extends Component {
+export default class EditTask extends Component {
     constructor(props) {
         super(props);
-        this.handleAddTask = this.handleAddTask.bind(this);
+        this.handleEditTask = this.handleEditTask.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
         this.onChangeDateOfDeadline = this.onChangeDateOfDeadline.bind(this);
 
         this.state = {
+            id: "",
             name: "",
             description: "",
             dateOfDeadline: null,
             message: ""
         };
+    }
+
+    componentDidMount() {
+        const taskId = +this.props.match.params.id;
+        if(taskId) {
+            this.findTaskById(taskId);
+        }
+    }
+
+    findTaskById(taskId) {
+        TaskService.getTask(taskId).then(response => {
+            if(response.data != null) {
+                this.setState({
+                    id: response.data.id,
+                    name: response.data.name,
+                    description: response.data.description,
+                    dateOfDeadline: response.data.dateOfDeadline
+                });
+            }
+        })
     }
 
     onChangeName(e) {
@@ -49,7 +70,7 @@ export default class AddTask extends Component {
         });
     }
 
-    handleAddTask(e) {
+    handleEditTask(e) {
         e.preventDefault();
 
         this.setState({
@@ -59,7 +80,7 @@ export default class AddTask extends Component {
         this.form.validateAll();
 
         if (this.checkBtn.context._errors.length === 0) {
-            TaskService.addTask(this.state.name, this.state.description, this.state.dateOfDeadline).then(
+            TaskService.editTask(this.state.id, this.state.name, this.state.description, this.state.dateOfDeadline).then(
                 () => {
                     this.props.history.push("/tasks");
                     window.location.reload();
@@ -85,7 +106,7 @@ export default class AddTask extends Component {
             <div className="base-container">
                 <div className="content">
                     <Form
-                        onSubmit={this.handleAddTask}
+                        onSubmit={this.handleEditTask}
                         ref={(c) => {
                             this.form = c;
                         }}
@@ -124,7 +145,7 @@ export default class AddTask extends Component {
 
                             <div className="form-group">
                                 <button  className="button" >
-                                    <span>Add task</span>
+                                    <span>Update task</span>
                                 </button>
                             </div>
 

@@ -14,6 +14,12 @@ class TaskService {
             { headers: authHeader() });
     }
 
+    editTask(id, name, description, dateOfDeadline) {
+        return axios.put(API_URL + `${id}`,
+            { name, description, dateOfDeadline },
+            { headers: authHeader() });
+    }
+
     deleteTask(id) {
         return axios.delete(API_URL + `${id}`, { headers: authHeader() });
     }
