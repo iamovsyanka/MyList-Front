@@ -4,8 +4,7 @@ import axios from 'axios';
 import "./style.css"
 import authHeader from '../../services/auth-header';
 import {Link} from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
-import {Card, Table, Image, ButtonGroup, Button, InputGroup, FormControl} from 'react-bootstrap';
+import {Card, Table, ButtonGroup, Button, InputGroup, FormControl} from 'react-bootstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faList, faEdit, faTrash, faStepBackward, faFastBackward, faStepForward, faFastForward, faSearch, faTimes} from '@fortawesome/free-solid-svg-icons';
 import ErrorBoundary from "../ErrorPage/error.component";
@@ -59,6 +58,10 @@ export default class TaskList extends React.Component {
             });
         });
     };
+
+    sendNotify() {
+        TaskService.sendNotify().then(alert("Notify send!"));
+    }
 
     sortData = () => {
         setTimeout(() => {
@@ -163,14 +166,12 @@ export default class TaskList extends React.Component {
                             <FontAwesomeIcon icon={faList} /> To do list
                         </div>
                         <div style={{"float":"right"}}>
-                                    <Button className="btn-add" type="button" onClick={(e) => this.onclick(e)}>
-                                        Add new task
-                                    </Button>
+                            <ButtonGroup>
                                     <InputGroup>
-                                        <FormControl placeholder="Search by name" name="search" value={search}
+                                        <FormControl placeholder="Search" name="search" value={search}
                                                      className="info-border"
                                                      onChange={this.searchChange}/>
-                                        <InputGroup.Append>
+                                        <InputGroup.Append className="info-border">
                                             <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
                                                 <FontAwesomeIcon icon={faSearch}/>
                                             </Button>
@@ -179,10 +180,17 @@ export default class TaskList extends React.Component {
                                             </Button>
                                         </InputGroup.Append>
                                     </InputGroup>
+                                <Button className="btn-add" type="button" onClick={(e) => this.onclick(e)}>
+                                    Add new task
+                                </Button>
+                                <Button className="btn-add" type="button" onClick={() => this.sendNotify()}>
+                                    Send notify
+                                </Button>
+                            </ButtonGroup>
                         </div>
                     </Card.Header>
                     <Card.Body>
-                        <Table bordered hover striped>
+                        <Table bordered hover>
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -202,7 +210,7 @@ export default class TaskList extends React.Component {
                                         <tr key={task.id}>
                                             <td>{task.name}</td>
                                             <td>{task.description === null ? '-' : task.description}</td>
-                                            <td>{task.dateOfCreation}</td>
+                                            <td>{task.dateOfCreation.toLocaleString()}</td>
                                             <td>{task.dateOfDeadline === null ? '-' : task.dateOfDeadline}</td>
                                             <td>
                                                 <ButtonGroup>

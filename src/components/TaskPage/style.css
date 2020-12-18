@@ -1,11 +1,13 @@
 .btn-add {
     color: aliceblue;
     background-color: #FF73AB;
-    border: none;
+    border-color: #870047;
     width: 100%;
-    margin-right: 10%;
+    margin-left: 2%;
 }
 
-.info-border {
-    width: 100%;
+.input-text {
+    border-color: #870047;
+    width: 20px;
+    margin-left: 2%;
 }

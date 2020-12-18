@@ -42,6 +42,7 @@ export default class Register extends Component {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeRepeatPassword = this.onChangeRepeatPassword.bind(this);
 
@@ -63,7 +64,7 @@ export default class Register extends Component {
 
   onChangeEmail(e) {
     this.setState({
-      name: e.target.value
+      email: e.target.value
     });
   }
 
@@ -96,26 +97,28 @@ export default class Register extends Component {
           this.state.password,
           this.state.repeatPassword
       ).then(
-        response => {
-          this.setState({
-            message: response.data.message,
-            successful: true
-          });
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          () => {
+            this.props.history.push("/login");
+            window.location.reload();
+          },
+          error => {
+            const resMessage =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
 
-          this.setState({
-            successful: false,
-            message: resMessage
-          });
-        }
+            this.setState({
+              loading: false,
+              message: resMessage
+            });
+          }
       );
+    } else {
+      this.setState({
+        loading: false
+      });
     }
   }
 
@@ -149,13 +152,13 @@ export default class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="name">Email</label>
+                  <label htmlFor="email">Email</label>
                   <Input
-                      type="text"
-                      name="name"
+                      type="email"
+                      name="email"
                       value={this.state.email}
                       onChange={this.onChangeEmail}
-                      validations={[required, vemail]}
+                      validations={[required]}
                   />
                 </div>
 

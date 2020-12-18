@@ -23,6 +23,10 @@ class TaskService {
     deleteTask(id) {
         return axios.delete(API_URL + `${id}`, { headers: authHeader() });
     }
+
+    sendNotify() {
+        return axios.get(API_URL + 'sendNotify', { headers: authHeader() });
+    }
 }
 
 export default new TaskService();

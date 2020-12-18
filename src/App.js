@@ -10,6 +10,7 @@ import Login from "./components/LoginPage/login.component";
 import Register from "./components/RegisterPage/register.component";
 import Home from "./components/HomePage/home.component";
 import Tasks from "./components/TaskPage/task.component"
+import Users from "./components/AdminPage/users.component"
 import AddTask from "./components/AddTaskPage/addtask.component";
 import EditTask from "./components/EditTaskPage/edittask.component";
 import ErrorBoundary from "./components/ErrorPage/error.component";
@@ -21,7 +22,7 @@ class App extends Component {
         this.logOut = this.logOut.bind(this);
 
         this.state = {
-            showAdminBoard: false,
+            isAdmin: false,
             currentUser: undefined
         };
     }
@@ -31,9 +32,8 @@ class App extends Component {
 
         if (user) {
             this.setState({
-                isNavMenu: false,
                 currentUser: user,
-                showAdminBoard: user.roles.includes("admin")
+                isAdmin: user.roles.includes("ROLE_ADMIN")
             });
         }
     }
@@ -43,7 +43,7 @@ class App extends Component {
     }
 
     render() {
-        const { currentUser, showAdminBoard } = this.state;
+        const { currentUser, isAdmin } = this.state;
 
         return (
             <BrowserRouter>
@@ -55,28 +55,17 @@ class App extends Component {
                                 alt="MyList"
                             />
                         </Link>
-                        {showAdminBoard && (
-                            <Link
-                                className={
-                                    "nav-bar__link" +
-                                    (this.state.isNavMenu ? " nav-bar__link_responsive" : "")
-                                }
-                                to={"/admin"}
-                            >
-                                Admin Task Panel
-                            </Link>
-                        )}
-                        {showAdminBoard && (
-                            <Link
-                                className={
-                                    "nav-bar__link" +
-                                    (this.state.isNavMenu ? " nav-bar__link_responsive" : "")
-                                }
-                                to={"/adminUser"}
-                            >
-                                Admin User Panel
-                            </Link>
-                        )}
+                        {
+                            isAdmin ?
+                                (<div className="navbar-nav ml-auto">
+                                    <li className="nav-item">
+                                        <a href="/users" className="nav-link">
+                                            Users
+                                        </a>
+                                    </li>
+                                </div>) : (<div/>)
+
+                        }
                         {currentUser ? (
                             <div className="navbar-nav ml-auto">
                                 <li className="nav-item">
@@ -112,6 +101,7 @@ class App extends Component {
                                 <Route exact path="/login" component={Login} />
                                 <Route exact path="/register" component={Register} />
                                 <Route exact path="/tasks" component={Tasks} />
+                                <Route exact path="/users" component={Users}/>
                                 <Route path="/addTask" exact component={AddTask}/>
                                 <Route path="/editTask/:id" exact component={EditTask}/>
                                 <Route path="/errorPage" exact component={ErrorBoundary}/>
